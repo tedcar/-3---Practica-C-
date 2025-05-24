@@ -66,6 +66,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.mainTabControl.Controls.Add(this.tabManagementPredictii);
             this.mainTabControl.Controls.Add(this.tabAdministrare);
             this.mainTabControl.Controls.Add(this.tabRapoarte);
+            this.mainTabControl.Controls.Add(this.tabDespre); // Added tabDespre
             this.mainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTabControl.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mainTabControl.Location = new System.Drawing.Point(0, 64); // Assuming MaterialSkin header of 64px
@@ -85,7 +86,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabMelodii.Padding = new System.Windows.Forms.Padding(15);
             this.tabMelodii.Size = new System.Drawing.Size(792, 506);
             this.tabMelodii.TabIndex = 0;
-            this.tabMelodii.Text = "Melodii (Admin)";
+            this.tabMelodii.Text = "Melodii (Admin)"; // Name verified
             // 
             // btnAdaugaMelodie
             // 
@@ -140,7 +141,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabIntervievati.Padding = new System.Windows.Forms.Padding(15);
             this.tabIntervievati.Size = new System.Drawing.Size(792, 506);
             this.tabIntervievati.TabIndex = 1;
-            this.tabIntervievati.Text = "Intervievați (Admin)";
+            this.tabIntervievati.Text = "Intervievați (Admin)"; // Name verified
             // 
             // btnAdaugaIntervievat
             // 
@@ -193,7 +194,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabVoteazaMelodii.Padding = new System.Windows.Forms.Padding(15);
             this.tabVoteazaMelodii.Size = new System.Drawing.Size(792, 506);
             this.tabVoteazaMelodii.TabIndex = 2;
-            this.tabVoteazaMelodii.Text = "Votează Melodii";
+            this.tabVoteazaMelodii.Text = "Votează Melodii"; // Name verified
             // 
             // btnInregistreazaVoturi
             // 
@@ -218,7 +219,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabManagementPredictii.Padding = new System.Windows.Forms.Padding(15);
             this.tabManagementPredictii.Size = new System.Drawing.Size(792, 506);
             this.tabManagementPredictii.TabIndex = 3;
-            this.tabManagementPredictii.Text = "Management Predicții (Admin)";
+            this.tabManagementPredictii.Text = "Management Predicții"; // Name updated
             // 
             // btnInregistreazaPredictii
             // 
@@ -243,7 +244,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabAdministrare.Padding = new System.Windows.Forms.Padding(15);
             this.tabAdministrare.Size = new System.Drawing.Size(792, 506);
             this.tabAdministrare.TabIndex = 4;
-            this.tabAdministrare.Text = "Administrare Clasamente";
+            this.tabAdministrare.Text = "Administrare Clasamente"; // Name verified
             // 
             // btnActualizeazaClasamente
             // 
@@ -269,7 +270,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabRapoarte.Padding = new System.Windows.Forms.Padding(15);
             this.tabRapoarte.Size = new System.Drawing.Size(792, 506);
             this.tabRapoarte.TabIndex = 5;
-            this.tabRapoarte.Text = "Rapoarte";
+            this.tabRapoarte.Text = "Rapoarte"; // Name verified
             // 
             // btnListaParticipanti
             // 
@@ -318,6 +319,30 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabAdministrare.ResumeLayout(false);
             this.tabRapoarte.ResumeLayout(false);
             this.ResumeLayout(false);
+            // 
+            // tabDespre
+            // 
+            this.tabDespre = new System.Windows.Forms.TabPage();
+            this.tabDespre.BackColor = System.Drawing.ColorTranslator.FromHtml("#fdf0d5");
+            this.tabDespre.Location = new System.Drawing.Point(4, 26);
+            this.tabDespre.Name = "tabDespre";
+            this.tabDespre.Padding = new System.Windows.Forms.Padding(15);
+            this.tabDespre.Size = new System.Drawing.Size(792, 506);
+            this.tabDespre.TabIndex = 6; // Next available index
+            this.tabDespre.Text = "Despre";
+            // Add a label to tabDespre
+            this.lblDespreInfo = new System.Windows.Forms.Label();
+            this.lblDespreInfo.AutoSize = true;
+            this.lblDespreInfo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDespreInfo.ForeColor = System.Drawing.ColorTranslator.FromHtml("#003049"); // Dark blue text
+            this.lblDespreInfo.Location = new System.Drawing.Point(20, 20);
+            this.lblDespreInfo.Name = "lblDespreInfo";
+            this.lblDespreInfo.Size = new System.Drawing.Size(400, 60); // Example size
+            this.lblDespreInfo.Text = "MelodiiApp - Concurs Muzical\nVersiunea 1.0\nDezvoltat de [Your Name/Team]";
+            this.tabDespre.Controls.Add(this.lblDespreInfo);
+            this.tabDespre.ResumeLayout(false);
+            this.tabDespre.PerformLayout();
+
 
         }
 
@@ -330,6 +355,8 @@ namespace MelodiiApp.UserInterface.Forms
         private System.Windows.Forms.TabPage tabManagementPredictii;
         private System.Windows.Forms.TabPage tabAdministrare;
         private System.Windows.Forms.TabPage tabRapoarte;
+        private System.Windows.Forms.TabPage tabDespre; // Added tabDespre field
+        private System.Windows.Forms.Label lblDespreInfo; // Added label for tabDespre
 
         private System.Windows.Forms.Button btnAdaugaMelodie;
         private System.Windows.Forms.Button btnGestioneazaMelodii;
