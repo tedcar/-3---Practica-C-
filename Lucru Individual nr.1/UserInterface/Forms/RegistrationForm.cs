@@ -1,4 +1,6 @@
 using System;
+using System.Linq; // Added for password complexity checks
+using System.Text.RegularExpressions; // Added for password complexity checks
 using System.Windows.Forms;
 using MelodiiApp.Core.DomainModels; // Corrected namespace
 using MelodiiApp.DataAccess; // Updated namespace
@@ -40,9 +42,14 @@ namespace MelodiiApp.UserInterface.Forms // Updated namespace
                 return;
             }
 
-            if (password.Length < 4)
+            // Password Complexity Validation
+            if (password.Length < 8 ||
+                !password.Any(char.IsUpper) ||
+                !password.Any(char.IsLower) ||
+                !password.Any(char.IsDigit) ||
+                !password.Any(ch => !char.IsLetterOrDigit(ch))) // Checks for at least one special character
             {
-                MessageBox.Show("Parola trebuie să conțină cel puțin 4 caractere!", "Eroare Înregistrare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Parola trebuie să conțină minim 8 caractere, o majusculă, o minusculă, o cifră și un caracter special (ex: !@#$%^&*).", "Eroare Înregistrare - Parolă Invalidă", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -52,23 +59,7 @@ namespace MelodiiApp.UserInterface.Forms // Updated namespace
 
             if (success)
             {
-                // Creează intervievat pentru acest user
-                var intervievatRepo = new IntervievatRepository();
-                var intervievatNou = new Intervievat
-                {
-                    NumeComplet = $"{nume} {prenume}",
-                    Varsta = Math.Max(1, (int)Math.Floor((DateTime.Now - dataNastere).TotalDays / 365.25)),
-                    Localitate = "-" // placeholder
-                };
-                intervievatRepo.AdaugaIntervievat(intervievatNou);
-
-                // Asociază intervievatul cu utilizatorul
-                var user = InMemoryAuthService.GetUserByUsername(username);
-                if (user != null)
-                {
-                    user.IntervievatID = intervievatNou.IntervievatID;
-                }
-
+                // Intervievat creation and association removed. AppUser is registered without an IntervievatID.
                 MessageBox.Show("Înregistrare reușită! Vă puteți autentifica acum.", "Succes", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close(); // Close registration form, LoginForm will re-show due to FormClosed event
             }

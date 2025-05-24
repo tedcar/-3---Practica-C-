@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography; // Added for SHA256
+using System.Text; // Added for Encoding
 using MelodiiApp.Core.DomainModels;
 
 namespace MelodiiApp.DataAccess
@@ -9,19 +11,36 @@ namespace MelodiiApp.DataAccess
     {
         public static List<AppUser> Users { get; private set; } = new List<AppUser>();
         public static AppUser CurrentLoggedInUser { get; set; }
+        private static readonly string Salt = "YOUR_FIXED_SALT_FOR_MELODII_APP"; // Fixed salt
 
         static InMemoryAuthService()
         {
-            // Seed with a default admin user for testing, if desired for the template
-            // Or leave it empty for the MELODII project to handle user creation via RegistrationForm
-            // For now, let's add one for basic login testing post-cleanup.
-            Users.Add(new AppUser { Username = "admin", Password = "admin", Role = "Admin" });
-            Users.Add(new AppUser { Username = "user", Password = "user", Role = "User" });
+            // Seed users with hashed passwords
+            Users.Add(new AppUser { Username = "admin", Password = HashPassword("Admin123!"), Role = "Admin", Email = "admin@example.com" });
+            Users.Add(new AppUser { Username = "user", Password = HashPassword("User123!"), Role = "User", Email = "user@example.com" });
+        }
+
+        private static string HashPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password)) return null; // Or throw an ArgumentNullException
+
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                string saltedPassword = password + Salt; 
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(saltedPassword));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
 
         public static AppUser AuthenticateUser(string username, string password)
         {
-            return Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+            string hashedPassword = HashPassword(password);
+            return Users.FirstOrDefault(u => u.Username == username && u.Password == hashedPassword);
         }
 
         public static AppUser GetUserByUsername(string username)
@@ -29,13 +48,16 @@ namespace MelodiiApp.DataAccess
             return Users.FirstOrDefault(u => u.Username == username);
         }
 
-        public static bool RegisterUser(string username, string password, string role = "User")
+        public static bool RegisterUser(string username, string password, string role = "User") // This overload might be deprecated or used internally
         {
             if (Users.Any(u => u.Username == username))
             {
                 return false; // Username already exists
             }
-            Users.Add(new AppUser { Username = username, Password = password, Role = role });
+            // Assuming this version might not have email, but still needs password hashing.
+            // If it's truly deprecated, it could be removed. For now, hash the password.
+            string hashedPassword = HashPassword(password);
+            Users.Add(new AppUser { Username = username, Password = hashedPassword, Role = role });
             return true;
         }
 
@@ -45,8 +67,9 @@ namespace MelodiiApp.DataAccess
             {
                 return false; // Username already exists
             }
-            Users.Add(new AppUser { Username = username, Email = email, Password = password, Role = role });
+            string hashedPassword = HashPassword(password); // Hash the password
+            Users.Add(new AppUser { Username = username, Email = email, Password = hashedPassword, Role = role });
             return true;
         }
     }
-} 
+}
