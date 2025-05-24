@@ -86,7 +86,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabMelodii.Padding = new System.Windows.Forms.Padding(15);
             this.tabMelodii.Size = new System.Drawing.Size(792, 506);
             this.tabMelodii.TabIndex = 0;
-            this.tabMelodii.Text = "Melodii (Admin)"; // Name verified
+            this.tabMelodii.Text = "Melodii (Admin)";
             // 
             // btnAdaugaMelodie
             // 
@@ -141,7 +141,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabIntervievati.Padding = new System.Windows.Forms.Padding(15);
             this.tabIntervievati.Size = new System.Drawing.Size(792, 506);
             this.tabIntervievati.TabIndex = 1;
-            this.tabIntervievati.Text = "Intervievați (Admin)"; // Name verified
+            this.tabIntervievati.Text = "Intervievați (Admin)";
             // 
             // btnAdaugaIntervievat
             // 
@@ -194,7 +194,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabVoteazaMelodii.Padding = new System.Windows.Forms.Padding(15);
             this.tabVoteazaMelodii.Size = new System.Drawing.Size(792, 506);
             this.tabVoteazaMelodii.TabIndex = 2;
-            this.tabVoteazaMelodii.Text = "Votează Melodii"; // Name verified
+            this.tabVoteazaMelodii.Text = "Votează Melodii";
             // 
             // btnInregistreazaVoturi
             // 
@@ -219,7 +219,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabManagementPredictii.Padding = new System.Windows.Forms.Padding(15);
             this.tabManagementPredictii.Size = new System.Drawing.Size(792, 506);
             this.tabManagementPredictii.TabIndex = 3;
-            this.tabManagementPredictii.Text = "Management Predicții"; // Name updated
+            this.tabManagementPredictii.Text = "Management Predicții";
             // 
             // btnInregistreazaPredictii
             // 
@@ -244,7 +244,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabAdministrare.Padding = new System.Windows.Forms.Padding(15);
             this.tabAdministrare.Size = new System.Drawing.Size(792, 506);
             this.tabAdministrare.TabIndex = 4;
-            this.tabAdministrare.Text = "Administrare Clasamente"; // Name verified
+            this.tabAdministrare.Text = "Administrare Clasamente";
             // 
             // btnActualizeazaClasamente
             // 
@@ -270,7 +270,7 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabRapoarte.Padding = new System.Windows.Forms.Padding(15);
             this.tabRapoarte.Size = new System.Drawing.Size(792, 506);
             this.tabRapoarte.TabIndex = 5;
-            this.tabRapoarte.Text = "Rapoarte"; // Name verified
+            this.tabRapoarte.Text = "Rapoarte";
             // 
             // btnListaParticipanti
             // 
@@ -328,9 +328,11 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabDespre.Name = "tabDespre";
             this.tabDespre.Padding = new System.Windows.Forms.Padding(15);
             this.tabDespre.Size = new System.Drawing.Size(792, 506);
-            this.tabDespre.TabIndex = 6; // Next available index
+            this.tabDespre.TabIndex = 6; 
             this.tabDespre.Text = "Despre";
-            // Add a label to tabDespre
+            // 
+            // lblDespreInfo 
+            // 
             this.lblDespreInfo = new System.Windows.Forms.Label();
             this.lblDespreInfo.AutoSize = true;
             this.lblDespreInfo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -342,6 +344,30 @@ namespace MelodiiApp.UserInterface.Forms
             this.tabDespre.Controls.Add(this.lblDespreInfo);
             this.tabDespre.ResumeLayout(false);
             this.tabDespre.PerformLayout();
+            // 
+            // btnLogout
+            // 
+            this.btnLogout = new MaterialSkin.Controls.MaterialButton();
+            this.btnLogout.AutoSize = false; // Allow custom size
+            this.btnLogout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLogout.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnLogout.Depth = 0;
+            this.btnLogout.HighEmphasis = true;
+            this.btnLogout.Icon = null; // Can add an icon later if desired
+            this.btnLogout.Location = new System.Drawing.Point(670, 28); // Position in the header area
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnLogout.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnLogout.Size = new System.Drawing.Size(120, 30); // Adjusted size
+            this.btnLogout.TabIndex = 12; // Ensure this is a unique and appropriate TabIndex
+            this.btnLogout.Text = "Deconectare";
+            this.btnLogout.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnLogout.UseAccentColor = false;
+            this.btnLogout.UseVisualStyleBackColor = true;
+            // this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click); // Will be wired in MainForm.cs
+            this.Controls.Add(this.btnLogout); // Add to form's controls, not TabControl
+            this.btnLogout.BringToFront(); // Ensure it's visible above the TabControl if overlapping
 
 
         }
@@ -369,5 +395,7 @@ namespace MelodiiApp.UserInterface.Forms
         private System.Windows.Forms.Button btnActualizeazaClasamente;
         private System.Windows.Forms.Button btnListaParticipanti;
         private System.Windows.Forms.Button btnExportParticipantiSub18;
+        private MelodiiApp.UserInterface.Controls.ListaVotantiControl _listaVotantiControl; // Added for new control
+        private MaterialSkin.Controls.MaterialButton btnLogout; // Declaration for the logout button
     }
 } 

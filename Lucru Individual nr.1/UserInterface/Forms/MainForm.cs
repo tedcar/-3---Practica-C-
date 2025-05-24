@@ -28,7 +28,8 @@ namespace MelodiiApp.UserInterface.Forms
         private TopNMelodiiControl _topNMelodiiControl;
         private TopNIntervievatiControl _topNIntervievatiControl;
         private PreziceTopMelodiiControl _preziceTopMelodiiControl;
-        private ListaParticipantiControl _listaParticipantiControl;
+        // private ListaParticipantiControl _listaParticipantiControl; // Old control, to be replaced
+        private ListaVotantiControl _listaVotantiControl; // New control for voters list
         // private System.Windows.Forms.TabPage tabDespre; // This will be handled by the designer
 
         private UserRole _currentUserRole; // Removed default assignment
@@ -74,13 +75,20 @@ namespace MelodiiApp.UserInterface.Forms
             _preziceTopMelodiiControl = new PreziceTopMelodiiControl { Dock = DockStyle.Fill, Visible = false };
             _topNMelodiiControl = new TopNMelodiiControl { Dock = DockStyle.Fill, Visible = false };
             _topNIntervievatiControl = new TopNIntervievatiControl { Dock = DockStyle.Fill, Visible = false };
-            _listaParticipantiControl = new ListaParticipantiControl { Dock = DockStyle.Fill, Visible = false };
+            // _listaParticipantiControl = new ListaParticipantiControl { Dock = DockStyle.Fill, Visible = false }; // Old control initialization
+            _listaVotantiControl = new ListaVotantiControl { Dock = DockStyle.Fill, Visible = false }; // Initialize new control
 
             this.tabMelodii.Controls.AddRange(new Control[] { _adaugaMelodieControl, _gestioneazaMelodiiControl, _topNMelodiiControl });
             this.tabIntervievati.Controls.AddRange(new Control[] { _adaugaIntervievatControl, _gestioneazaIntervievatiControl, _topNIntervievatiControl });
             this.tabVoteazaMelodii.Controls.Add(_voteazaControl); // Only voting control here
             this.tabManagementPredictii.Controls.Add(_preziceTopMelodiiControl); // Prediction control here
-            this.tabRapoarte.Controls.Add(_listaParticipantiControl);
+            
+            // Remove the old control from the tab and add the new one
+            // this.tabRapoarte.Controls.Remove(_listaParticipantiControl); // Ensure old one is removed if it was added by designer
+            this.tabRapoarte.Controls.Clear(); // Clear all controls first to be safe
+            this.tabRapoarte.Controls.Add(this.btnListaParticipanti); // Re-add button if it was on the tab directly
+            this.tabRapoarte.Controls.Add(this.btnExportParticipantiSub18); // Re-add button
+            this.tabRapoarte.Controls.Add(_listaVotantiControl); // Add the new control
             // tabDespre does not have user controls, so no additions here.
 
             _adaugaMelodieControl.RequestClose += UserControl_RequestClose;
@@ -147,109 +155,156 @@ namespace MelodiiApp.UserInterface.Forms
             // TabAdministrare
             btnActualizeazaClasamente.Click += BtnActualizeazaClasamente_Click; 
             // TabRapoarte
-            btnListaParticipanti.Click += BtnListaParticipanti_Click;
+            btnListaParticipanti.Click += BtnListaParticipanti_Click; // This will now show ListaVotantiControl
             btnExportParticipantiSub18.Click += BtnExportParticipantiSub18_Click;
+
+            // Logout Button
+            if (this.Controls.OfType<MaterialSkin.Controls.MaterialButton>().Any(btn => btn.Name == "btnLogout"))
+            {
+                var logoutButton = this.Controls.OfType<MaterialSkin.Controls.MaterialButton>().First(btn => btn.Name == "btnLogout");
+                logoutButton.Click += btnLogout_Click;
+            }
+        }
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            // Clear the currently logged-in user session
+            InMemoryAuthService.CurrentLoggedInUser = null;
+
+            // Create a new instance of LoginForm
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
+
+            // Close the current MainForm
+            this.Close();
         }
 
         private void ConfigureUIForRole(UserRole role)
         {
-            _currentUserRole = role; 
+            _currentUserRole = role;
             bool isAdmin = (role == UserRole.Admin);
 
-            // Tab Visibility
-            // Admin Tabs
-            if (tabMelodii != null) tabMelodii.Visible = isAdmin; // Text: "Melodii (Admin)"
-            if (tabIntervievati != null) tabIntervievati.Visible = isAdmin; // Text: "Intervievați (Admin)"
-            if (tabManagementPredictii != null) tabManagementPredictii.Visible = isAdmin; // Text: "Management Predicții"
-            if (tabAdministrare != null) tabAdministrare.Visible = isAdmin; // Text: "Administrare Clasamente"
-            if (tabRapoarte != null) tabRapoarte.Visible = isAdmin; // Text: "Rapoarte"
-
-            // User Tabs
-            if (tabVoteazaMelodii != null) tabVoteazaMelodii.Visible = !isAdmin; // Text: "Votează Melodii"
-            
-            // Shared Tab
-            if (tabDespre != null) tabDespre.Visible = true; // Always visible for both roles
-
-            // Set default tab based on role
+            // Admin View Logic
             if (isAdmin)
             {
-                if (mainTabControl.TabPages.Contains(tabMelodii) && tabMelodii.Visible)
+                if (tabMelodii != null) { tabMelodii.Text = "Melodii (Admin)"; tabMelodii.Visible = true; }
+                if (tabIntervievati != null) { tabIntervievati.Text = "Intervievați (Admin)"; tabIntervievati.Visible = true; }
+                if (tabManagementPredictii != null) { tabManagementPredictii.Text = "Management Predicții"; tabManagementPredictii.Visible = true; }
+                if (tabAdministrare != null) { tabAdministrare.Text = "Administrare Clasamente"; tabAdministrare.Visible = true; }
+                if (tabRapoarte != null) { tabRapoarte.Text = "Rapoarte"; tabRapoarte.Visible = true; }
+                if (tabDespre != null) { tabDespre.Text = "Despre"; tabDespre.Visible = true; }
+
+                if (tabVoteazaMelodii != null) { tabVoteazaMelodii.Visible = false; }
+
+                // Default selected tab for Admin
+                if (mainTabControl.TabPages.Contains(tabMelodii))
                     mainTabControl.SelectedTab = tabMelodii;
-                else
-                {
-                    var firstVisibleAdminTab = mainTabControl.TabPages.Cast<TabPage>()
-                        .FirstOrDefault(tp => tp.Visible && tp != tabDespre && tp != tabVoteazaMelodii); // Prioritize admin functional tabs
-                    if (firstVisibleAdminTab != null) mainTabControl.SelectedTab = firstVisibleAdminTab;
-                    else if (mainTabControl.TabPages.Contains(tabDespre)) mainTabControl.SelectedTab = tabDespre; // Fallback to Despre for Admin
-                }
-            }
-            else // User
-            {
-                if (mainTabControl.TabPages.Contains(tabVoteazaMelodii) && tabVoteazaMelodii.Visible)
-                    mainTabControl.SelectedTab = tabVoteazaMelodii;
-                else if (mainTabControl.TabPages.Contains(tabDespre)) // Fallback to Despre for User
+                else if (mainTabControl.TabPages.Contains(tabDespre)) // Fallback
                     mainTabControl.SelectedTab = tabDespre;
                 else 
                 {
-                     var firstVisibleUserTab = mainTabControl.TabPages.Cast<TabPage>().FirstOrDefault(tp => tp.Visible);
+                    var firstVisibleAdminTab = mainTabControl.TabPages.Cast<TabPage>().FirstOrDefault(tp => tp.Visible);
+                    if (firstVisibleAdminTab != null) mainTabControl.SelectedTab = firstVisibleAdminTab;
+                }
+
+
+                // Button visibility within Admin tabs (ensure they exist before accessing)
+                // btnInregistreazaPredictii is on tabManagementPredictii
+                // This button is part of the tab page directly, not a UserControl.
+                // Its visibility is controlled by the tab's visibility.
+                // If btnInregistreazaPredictii were a specific control variable in MainForm, you'd do:
+                // if (btnInregistreazaPredictii != null) btnInregistreazaPredictii.Visible = true;
+            }
+            // User (Voter) View Logic
+            else // UserRole.User
+            {
+                if (tabVoteazaMelodii != null) { tabVoteazaMelodii.Text = "Votează Melodii"; tabVoteazaMelodii.Visible = true; }
+                if (tabDespre != null) { tabDespre.Text = "Despre"; tabDespre.Visible = true; }
+
+                if (tabMelodii != null) { tabMelodii.Visible = false; }
+                if (tabIntervievati != null) { tabIntervievati.Visible = false; }
+                if (tabManagementPredictii != null) { tabManagementPredictii.Visible = false; }
+                if (tabAdministrare != null) { tabAdministrare.Visible = false; }
+                if (tabRapoarte != null) { tabRapoarte.Visible = false; }
+
+                // Default selected tab for User
+                if (mainTabControl.TabPages.Contains(tabVoteazaMelodii))
+                    mainTabControl.SelectedTab = tabVoteazaMelodii;
+                else if (mainTabControl.TabPages.Contains(tabDespre)) // Fallback
+                    mainTabControl.SelectedTab = tabDespre;
+                else
+                {
+                    var firstVisibleUserTab = mainTabControl.TabPages.Cast<TabPage>().FirstOrDefault(tp => tp.Visible);
                     if (firstVisibleUserTab != null) mainTabControl.SelectedTab = firstVisibleUserTab;
                 }
+
+
+                // Button visibility within User tabs
+                // btnInregistreazaVoturi is on tabVoteazaMelodii.
+                // Similar to admin, this button's visibility is controlled by the tab's visibility.
+                // If btnInregistreazaVoturi were a specific control variable in MainForm, you'd do:
+                // if (btnInregistreazaVoturi != null) btnInregistreazaVoturi.Visible = true;
             }
             
-            // Button visibility:
-            // Buttons are generally on role-specific tabs. If a tab is visible, its main navigation buttons should be visible.
-            // The UserControls themselves handle their internal logic.
-            // btnInregistreazaPredictii is on tabManagementPredictii (Admin only) -> visibility determined by tab's visibility.
-            // btnInregistreazaVoturi is on tabVoteazaMelodii (User only) -> visibility determined by tab's visibility.
-            // No explicit button hiding/showing needed here if tabs are strictly role-based.
+            // Ensure all UserControls on now-hidden tabs are also hidden.
+            // This is more of a safeguard, as ShowControlInTabPage should handle it.
+            foreach (TabPage tabPage in mainTabControl.TabPages)
+            {
+                if (!tabPage.Visible)
+                {
+                    foreach (Control ctrl in tabPage.Controls)
+                    {
+                        if (ctrl is UserControl)
+                        {
+                            ctrl.Visible = false;
+                        }
+                    }
+                }
+            }
         }
 
         private void ShowControlInTabPage(TabPage tabPage, Control controlToShow)
         {
-            if (tabPage == null || !tabPage.Visible) // Do not attempt to show on a hidden tab
+            // Ensure the target tab is actually visible before trying to select it or show controls on it.
+            // This check is crucial after ConfigureUIForRole might have hidden the tab.
+            if (tabPage == null || !mainTabControl.TabPages.Contains(tabPage) || !tabPage.Visible)
             {
-                 // Optionally, find the first visible tab and select it if current target is hidden
-                if (mainTabControl.TabPages.Count > 0 && !mainTabControl.TabPages.Cast<TabPage>().Any(tp => tp.Visible))
+                // Attempt to find and select the first visible tab as a fallback.
+                var firstVisible = mainTabControl.TabPages.Cast<TabPage>().FirstOrDefault(tp => tp.Visible);
+                if (firstVisible != null)
                 {
-                    // No tabs are visible, this is an issue with role configuration or logic.
-                    // This case should ideally not happen if ConfigureUIForRole sets a default visible tab.
-                    MessageBox.Show("Eroare: Niciun tab nu este vizibil. Verificați configurația rolurilor.", "Eroare Configurare UI", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    mainTabControl.SelectedTab = firstVisible;
+                    // If we are falling back to a different tab, we should not show the original 'controlToShow'
+                    // unless it's explicitly meant for this fallback tab (which is unlikely).
+                    // So, we typically would hide all UserControls on this fallback tab or show its default state.
+                    foreach (Control ctrl in firstVisible.Controls)
+                    {
+                        if (ctrl is UserControl) ctrl.Visible = false;
+                        else if (ctrl is Button && ctrl.Parent == firstVisible) ctrl.Visible = true; // Ensure buttons on the tab page are visible
+                    }
                 }
-                // If the target tabPage is not null but is currently not visible (e.g., due to role restrictions)
-                // and the controlToShow is not null, it means there's a logic error trying to show a control on a hidden tab.
-                else if (tabPage != null && !tabPage.Visible && controlToShow != null)
+                else
                 {
-                    // Log this or show an error, but don't switch to a random tab.
-                    // The button click should not have happened if the tab was invisible.
-                    // This implies an issue with button visibility or event handling logic.
-                    Console.WriteLine($"Attempted to show control '{controlToShow.Name}' on a hidden tab '{tabPage.Name}'. Review UI logic.");
-                    return; 
+                    // This case means no tabs are visible at all, which indicates a deeper issue.
+                    MessageBox.Show("Eroare critică: Niciun tab nu este configurat pentru a fi vizibil.", "Eroare Configurare UI", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                // If tabPage is null (should not happen from button clicks) or not visible (and no specific control to show),
-                // try to select the first available visible tab. This is more of a fallback.
-                else if (tabPage == null || !tabPage.Visible) 
-                {
-                    var firstVisible = mainTabControl.TabPages.Cast<TabPage>().FirstOrDefault(tp => tp.Visible);
-                    if (firstVisible != null) mainTabControl.SelectedTab = firstVisible;
-                    else  MessageBox.Show("Eroare: Niciun tab selectabil nu este vizibil.", "Eroare Navigare Tab", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                return; // Exit if the target tab is not suitable
             }
             
-            if (mainTabControl.SelectedTab != tabPage) // Only change if not already selected
+            // Proceed if the tabPage is valid and visible
+            if (mainTabControl.SelectedTab != tabPage)
             {
-                mainTabControl.SelectedTab = tabPage; 
+                mainTabControl.SelectedTab = tabPage;
             }
 
+            // Hide all other UserControls on this tab page, show the requested one
             foreach (Control ctrl in tabPage.Controls)
             {
-                if (ctrl is UserControl && ctrl != controlToShow) 
+                if (ctrl is UserControl && ctrl != controlToShow)
                 {
                     ctrl.Visible = false;
                 }
-                 // Make sure buttons on the TabPage itself (not within UserControls) remain visible
-                else if (ctrl is Button && ctrl.Parent == tabPage)
+                // Ensure main navigation buttons on the TabPage itself remain visible
+                else if (ctrl is Button && ctrl.Parent == tabPage) 
                 {
                     ctrl.Visible = true;
                 }
@@ -257,20 +312,49 @@ namespace MelodiiApp.UserInterface.Forms
 
             if (controlToShow != null)
             {
-                if (controlToShow == _gestioneazaMelodiiControl) _gestioneazaMelodiiControl.RefreshData(); 
-                else if (controlToShow == _gestioneazaIntervievatiControl) _gestioneazaIntervievatiControl.RefreshData(); 
-                else if (controlToShow == _topNMelodiiControl) _topNMelodiiControl.RefreshData(); 
-                else if (controlToShow == _topNIntervievatiControl) _topNIntervievatiControl.RefreshData(); 
-                else if (controlToShow == _listaParticipantiControl) _listaParticipantiControl.RefreshData();
-                
+                // Refresh data if the control implements a RefreshData method or similar
+                if (controlToShow == _gestioneazaMelodiiControl) _gestioneazaMelodiiControl.RefreshData();
+                else if (controlToShow == _gestioneazaIntervievatiControl) _gestioneazaIntervievatiControl.RefreshData();
+                else if (controlToShow == _topNMelodiiControl) _topNMelodiiControl.RefreshData();
+                else if (controlToShow == _topNIntervievatiControl) _topNIntervievatiControl.RefreshData();
+                // else if (controlToShow == _listaParticipantiControl) _listaParticipantiControl.RefreshData(); // Old control
+                else if (controlToShow == _listaVotantiControl) _listaVotantiControl.RefreshData(); // New control
+                // Note: _voteazaControl and _preziceTopMelodiiControl might have their own load/refresh logic 
+                // in VisibleChanged or a dedicated method if needed.
+
                 controlToShow.Visible = true;
-                controlToShow.BringToFront(); 
+                controlToShow.BringToFront();
+            }
+            else // No specific UserControl to show, ensure all UserControls are hidden (buttons remain visible)
+            {
+                foreach (Control ctrl in tabPage.Controls)
+                {
+                    if (ctrl is UserControl)
+                    {
+                        ctrl.Visible = false;
+                    }
+                }
             }
         }
 
         private void UserControl_RequestClose(object sender, EventArgs e)
         {
-            if (sender is Control control) control.Visible = false; 
+            if (sender is Control control)
+            {
+                control.Visible = false;
+                // Optional: when a user control closes, show the default buttons on its parent tab.
+                // This assumes user controls are direct children of a TabPage.
+                if (control.Parent is TabPage parentTabPage)
+                {
+                    foreach (Control parentCtrl in parentTabPage.Controls)
+                    {
+                        if (parentCtrl is Button)
+                        {
+                            parentCtrl.Visible = true;
+                        }
+                    }
+                }
+            }
         }
 
         private void BtnActualizeazaClasamente_Click(object sender, EventArgs e)
@@ -302,9 +386,13 @@ namespace MelodiiApp.UserInterface.Forms
                 {
                     _gestioneazaIntervievatiControl.RefreshData();
                 }
-                if (_listaParticipantiControl != null && tabRapoarte.Controls.Contains(_listaParticipantiControl) && _listaParticipantiControl.Visible)
+                // if (_listaParticipantiControl != null && tabRapoarte.Controls.Contains(_listaParticipantiControl) && _listaParticipantiControl.Visible)
+                // {
+                //    _listaParticipantiControl.RefreshData(); // Old control
+                // }
+                if (_listaVotantiControl != null && tabRapoarte.Controls.Contains(_listaVotantiControl) && _listaVotantiControl.Visible)
                 {
-                    _listaParticipantiControl.RefreshData();
+                    _listaVotantiControl.RefreshData(); // New control
                 }
 
                 MessageBox.Show("Toate clasamentele și listele relevante au fost actualizate.", "Actualizare Completă", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -317,7 +405,8 @@ namespace MelodiiApp.UserInterface.Forms
 
         private void BtnListaParticipanti_Click(object sender, EventArgs e)
         {
-            ShowControlInTabPage(this.tabRapoarte, _listaParticipantiControl);
+            // This button should now show the list of voters (AppUsers with Role "User")
+            ShowControlInTabPage(this.tabRapoarte, _listaVotantiControl); 
         }
 
         private void BtnExportParticipantiSub18_Click(object sender, EventArgs e)

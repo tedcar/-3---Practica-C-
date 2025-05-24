@@ -125,6 +125,9 @@ namespace MelodiiApp.UserInterface.Forms
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(252, 32);
             this.dateTimePicker1.TabIndex = 12;
+            this.dateTimePicker1.ShowUpDown = true; // Added for easier year selection
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short; // Standard short date format
+            this.dateTimePicker1.MaxDate = System.DateTime.Now; // Prevent selecting future dates
             // 
             // label5
             // 
