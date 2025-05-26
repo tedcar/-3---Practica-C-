@@ -1,9 +1,8 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucru Individual nr.1", "Lucru Individual nr.1\Lucru Individual nr.1.csproj", "{3826FB03-A988-4032-A2E0-C8032F37DE4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucru Individual nr.1", "Lucru Individual nr.1.csproj", "{548F3FAC-ECB7-BD59-66D7-132E376152E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +10,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3826FB03-A988-4032-A2E0-C8032F37DE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3826FB03-A988-4032-A2E0-C8032F37DE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3826FB03-A988-4032-A2E0-C8032F37DE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3826FB03-A988-4032-A2E0-C8032F37DE4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{548F3FAC-ECB7-BD59-66D7-132E376152E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{548F3FAC-ECB7-BD59-66D7-132E376152E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{548F3FAC-ECB7-BD59-66D7-132E376152E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{548F3FAC-ECB7-BD59-66D7-132E376152E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4F152A05-D65C-4EDC-A1A0-B4E5EEC6194A}
+		SolutionGuid = {D4DFB371-42E4-4037-AB1A-5D0D29580AAD}
 	EndGlobalSection
 EndGlobal

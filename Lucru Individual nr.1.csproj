@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3826FB03-A988-4032-A2E0-C8032F37DE4B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MelodiiApp</RootNamespace>
+    <AssemblyName>MelodiiApp</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MaterialSkin, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\\MaterialSkin.2.2.3.1\\lib\\net461\\MaterialSkin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAccess\\InMemoryAuthService.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\\AssemblyInfo.cs" />
+    <Compile Include="Properties\\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\RegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\RegistrationForm.Designer.cs">
+      <DependentUpon>RegistrationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\EditIntervievatForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\EditIntervievatForm.Designer.cs">
+      <DependentUpon>EditIntervievatForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\EditMelodieForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Forms\\EditMelodieForm.Designer.cs">
+      <DependentUpon>EditMelodieForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\\DomainModels\\Melodie.cs" />
+    <Compile Include="DataAccess\\DatabaseConnection\\DatabaseHelper.cs" />
+    <Compile Include="DataAccess\\MelodieRepository.cs" />
+    <Compile Include="Core\\DomainModels\\Intervievat.cs" />
+    <Compile Include="DataAccess\\IntervievatRepository.cs" />
+    <Compile Include="Core\\DomainModels\\Vot.cs" />
+    <Compile Include="Core\\DomainModels\\AppUser.cs" />
+    <Compile Include="Core\\DomainModels\\Predictie.cs" />
+    <Compile Include="Core\\Models\\UserRole.cs" />
+    <Compile Include="DataAccess\\VotRepository.cs" />
+    <Compile Include="DataAccess\\PredictieRepository.cs" />
+    <Compile Include="UserInterface\\Controls\\AdaugaMelodieControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\AdaugaMelodieControl.Designer.cs">
+      <DependentUpon>AdaugaMelodieControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\AdaugaIntervievatControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\AdaugaIntervievatControl.Designer.cs">
+      <DependentUpon>AdaugaIntervievatControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\GestioneazaIntervievatiControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\GestioneazaIntervievatiControl.Designer.cs">
+      <DependentUpon>GestioneazaIntervievatiControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\GestioneazaMelodiiControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\GestioneazaMelodiiControl.Designer.cs">
+      <DependentUpon>GestioneazaMelodiiControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\VoteazaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\VoteazaControl.Designer.cs">
+      <DependentUpon>VoteazaControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\TopNMelodiiControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\\Controls\\TopNMelodiiControl.Designer.cs">
+      <DependentUpon>TopNMelodiiControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Controls\TopNIntervievatiControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\Controls\TopNIntervievatiControl.Designer.cs">
+      <DependentUpon>TopNIntervievatiControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Controls\PreziceTopMelodiiControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\Controls\PreziceTopMelodiiControl.Designer.cs">
+      <DependentUpon>PreziceTopMelodiiControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\Helpers\ThemeHelper.cs" />
+    <Compile Include="UserInterface\Controls\ListaParticipantiControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserInterface\Controls\ListaParticipantiControl.Designer.cs">
+      <DependentUpon>ListaParticipantiControl.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Forms\\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Forms\\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Forms\\RegistrationForm.resx">
+      <DependentUpon>RegistrationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Forms\\EditIntervievatForm.resx">
+      <DependentUpon>EditIntervievatForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Forms\\EditMelodieForm.resx">
+      <DependentUpon>EditMelodieForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Controls\\AdaugaMelodieControl.resx">
+      <DependentUpon>AdaugaMelodieControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Controls\\AdaugaIntervievatControl.resx">
+      <DependentUpon>AdaugaIntervievatControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Controls\\GestioneazaIntervievatiControl.resx">
+      <DependentUpon>GestioneazaIntervievatiControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Controls\\GestioneazaMelodiiControl.resx">
+      <DependentUpon>GestioneazaMelodiiControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Controls\\VoteazaControl.resx">
+      <DependentUpon>VoteazaControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\\Controls\\TopNMelodiiControl.resx">
+      <DependentUpon>TopNMelodiiControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\Controls\TopNIntervievatiControl.resx">
+      <DependentUpon>TopNIntervievatiControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\Controls\PreziceTopMelodiiControl.resx">
+      <DependentUpon>PreziceTopMelodiiControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInterface\Controls\ListaParticipantiControl.resx">
+      <DependentUpon>ListaParticipantiControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\\background.jpg" />
+    <None Include="Properties\\images.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccess" />
+    <Folder Include="UserInterface\\Forms" />
+    <Folder Include="UserInterface\\Controls" />
+    <Folder Include="UserInterface\\Helpers" />
+    <Folder Include="Core\\DomainModels" />
+    <Folder Include="DataAccess\\DatabaseConnection" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+  </Target>
+</Project>
